@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Pong</title>
+	<style>
+		canvas {
+			position: absolute;
+			margin : auto;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+		}
+	</style>
+</head>
+<body style="background-color:gray">
+<h1 id="PlayerScore">0</h1>
+<h1 id="ComputerScore">0</h1>
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script>
+
+var WIDTH=700;
+var HEIGHT=600;
+var pi=Math.PI;
+var UpButton=38;
+var DownButton=40;
+var canvas;
+var objectPiece;
+var keystate;
+var player;
+var computer;
+var ball;
+var playerScore=0;
+
+
+player = {
+	xCoord: null,
+	yCoord: null,
+	width: 20,
+	height: 100,
+
+	update: function(){
+		if (keystate[UpButton]) {
+			this.yCoord -= 7;
+		}
+		if (keystate[DownButton]) {
+			this.yCoord += 7;
+		}
+
+		this.yCoord = Math.max(Math.min(this.yCoord, HEIGHT - this.height), 0);
+	},
+	draw: function() {
+		objectPiece.fillStyle = "blue";
+		objectPiece.fillRect(this.xCoord, this.yCoord, this.width, this.height);
+	}
+}
+
+computer = {
+	xCoord: null,
+	yCoord: null,
+	width: 20,
+	height: 100,
+
+	update: function(){
+		var desty = ball.yCoord - (this.height - ball.side)*0.5;
+		this.yCoord += (desty - this.yCoord) * 0.1;
+		this.yCoord = Math.max(Math.min(this.yCoord, HEIGHT - this.height), 0);
+	},
+	draw: function() {
+		objectPiece.fillStyle = "blue";
+		objectPiece.fillRect(this.xCoord, this.yCoord, this.width, this.height);
+	}
+}
+
+ball = {
+	xCoord: null,
+	yCoord: null,
+	vel: null,
+	side: 30,
+	quickness:10,
+
+	serve: function(side) {
+		var r = Math.random();
+		this.xCoord = side === 1 ? player.xCoord + player.width : computer.xCoord - this.side;
+		this.yCoord = (HEIGHT - this.side) * r;
+
+		var phi = 0.1*pi*(1-2*r);
+		this.vel = {
+			xCoord: side*this.quickness*Math.cos(phi),
+			yCoord: this.quickness*Math.sin(phi)
+		}
+	},
+
+	update: function(){
+		this.xCoord += this.vel.xCoord;
+		this.yCoord += this.vel.yCoord;
+
+		if(0 > this.yCoord || this.yCoord+this.side > HEIGHT) {
+			var offset = this.vel.yCoord < 0 ? 0 - this.yCoord : HEIGHT - (this.yCoord+this.side);
+			this.yCoord += 2*offset;  
+			this.vel.yCoord *= -1;
+		}
+
+		var AABBIntersect = function(ax, ay, aw, ah, bx, by, bw, bh) {
+
+			return ax < bx+bw && ay < by+bh && bx < ax+aw && by < ay+ah;
+		};
+
+		var pdle = this.vel.xCoord < 0 ? player : computer;
+		if (AABBIntersect(pdle.xCoord, pdle.yCoord, pdle.width, pdle.height, this.xCoord, this.yCoord, this.side, this.side))
+		{
+			var n = (this.yCoord+this.side - pdle.yCoord)/(pdle.height+this.side);
+			var phi = 0.25*pi*(2*n-1); // pi/4 = 45
+
+			var smash = Math.abs(phi) > 0.2*pi ? 1.5 : 1;
+			this.vel.xCoord = smash*(pdle===player ? 1 : -1)*this.quickness*Math.cos(phi);
+			this.vel.yCoord = smash*this.quickness*Math.sin(phi);
+		}
+
+		if (this.xCoord > WIDTH){
+			playerScore += 1;
+			document.getElementById("PlayerScore").innerHTML = playerScore;
+			this.serve(-1);
+			this.quickness +=1;
+		}
+
+		if (this.xCoord + this.side < 0){
+			 var e = document.body;
+    		 e.parentNode.removeChild(e);
+			main();
+		}
+	},
+	draw: function() {
+		objectPiece.fillStyle = "red";
+		objectPiece.fillRect(this.xCoord, this.yCoord, this.side, this.side);
+	}
+}
+
+function main(){
+	
+	canvas = document.createElement("canvas");
+	canvas.width = WIDTH;
+	canvas.height = HEIGHT;
+	objectPiece = canvas.getContext("2d");
+	document.body.appendChild(canvas);
+	keystate = {};
+	document.addEventListener("keydown", function(evt){
+		keystate[evt.keyCode] = true;
+	});
+	document.addEventListener("keyup", function(evt){
+		delete keystate[evt.keyCode];
+	});
+
+	init();
+
+	var loop = function() {
+		update();
+		draw();
+
+		window.requestAnimationFrame(loop, canvas);
+	};
+	window.requestAnimationFrame(loop, canvas);
+
+}
+
+function init() {
+	playerScore = 0;
+	player.xCoord = player.width;
+	player.yCoord = (HEIGHT - player.height)/2;
+
+	computer.xCoord = WIDTH - (player.width + computer.width);
+	computer.yCoord = (HEIGHT - computer.height)/2;
+
+	ball.serve(1);
+}
+
+function update() {
+
+	ball.update();
+	player.update();
+	computer.update();
+}
+
+function draw() {
+	objectPiece.fillRect(0, 0, WIDTH, HEIGHT);
+
+	objectPiece.save();
+
+	objectPiece.fillStyle = "blue";
+
+
+	ball.draw();
+	player.draw();
+	computer.draw();
+
+	var w = 4;
+	var xCoord = (WIDTH - w) * 0.5;
+	var yCoord = 0;
+	var step = HEIGHT/20;
+	while (yCoord < HEIGHT) {
+		objectPiece.fillRect(xCoord, yCoord+step*0.25, w, step*0.5);
+		yCoord+= step;
+	}
+
+	objectPiece.restore();
+}
+
+main();
+</script>
+</body>
+</html>
