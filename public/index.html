@@ -166,9 +166,7 @@ ball = {
 			 var e = document.body;
 			 computerScore += 1;
 			document.getElementById("ComputerScore").innerHTML = "Computer: " + computerScore;
-			thefinal();
-			//
-			//main();
+			main();
 		}
 	},
 	draw: function() {
@@ -176,12 +174,15 @@ ball = {
 		objectPiece.fillRect(this.xCoord, this.yCoord, this.side, this.side);
 	}
 }
-function thefinal(){
-system('pause');////////////////////////////////////////////////////////////////////	
-}
+
 
 function main(){
+
+if(computerScore == 1){
 	
+	window.alert("IF YOU LOSE, ENTER YOUR SCORE AND HIT REFRESH!");
+	system('pause');
+}
 	canvas = document.createElement("canvas");
 	canvas.width = WIDTH;
 	canvas.height = HEIGHT;
@@ -196,7 +197,6 @@ function main(){
 	});
 	
 	document.getElementById("colors").addEventListener("click", function(){
-	//if = 7 ,=-1
 	if(color==6){
 		color=-1;
 		}
@@ -204,7 +204,7 @@ function main(){
 	});
 	
 	init();
-
+window.alert("DON'T LET THE COMPUTER SCORE!");
 	var loop = function() {
 		update();
 		draw();

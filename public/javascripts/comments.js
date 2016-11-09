@@ -2,6 +2,7 @@ $(document).ready(function(){
 	
 	$.getJSON('comment', function(data) {
        // console.log(data);
+	   
         var everything = "<ul>";
         for(var comment in data) {
           com = data[comment];
@@ -13,6 +14,10 @@ $(document).ready(function(){
 	
    $("#serialize").click(function(){
    var myobj = {Name:$("#Name").val(),Comment:$("#Comment").val()};
+   
+   if(myobj.Comment>10){
+   window.alert("liar");
+   }
     jobj = JSON.stringify(myobj);
    // $("#json").text(jobj);	
 	var url = "comment";
@@ -40,26 +45,6 @@ $.ajax({
 	
 });
 
-  $("#colors").click(function(){
-   
-
-    })
-/*
-
-$scope.clear = function() {
-           $http({
-  method: 'GET',
-  url: '/delete'
-}).then(function successCallback(response) {
-
-  }, function errorCallback(response) {
-  });
-        console.log('deleting all');
-          $scope.getAll();
-    };
-
-
-*/
 	
 
 
