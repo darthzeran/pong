@@ -5,7 +5,7 @@ $(document).ready(function(){
         var everything = "<ul>";
         for(var comment in data) {
           com = data[comment];
-          everything += "<li>Name: " + com.Name + " -- Comment: " + com.Comment + "</li>";
+          everything += "<li>Player: " + com.Name + " -- Score: " + com.Comment + "</li>";
         }
         everything += "</ul>";
         $("#comments").html(everything);
@@ -31,13 +31,19 @@ $.ajax({
         var everything = "<ul>";
         for(var comment in data) {
           com = data[comment];
-          everything += "<li>Name: " + com.Name + " -- Comment: " + com.Comment + "</li>";
+          everything += "<li>Player: " + com.Name + " -- Score: " + com.Comment + "</li>";
         }
         everything += "</ul>";
         $("#comments").html(everything);
       })
     })
+	
 });
+
+  $("#colors").click(function(){
+   
+
+    })
 /*
 
 $scope.clear = function() {
