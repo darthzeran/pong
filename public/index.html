@@ -36,20 +36,20 @@
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 	<script src="javascripts/comments.js"></script>
 </head>
-<body style="background-color:gray">
+<body style="background-color:lightblue">
 <h1 id="PlayerScore">You: 0</h1>
 <h1 id="ComputerScore">Computer: 0</h1>
 
 <form id="commentForm" action="">
-  <label for="name">Player: </label><input type="text" id="Name" placeholder="Player"><br>
-  <label for="comment">Score: </label><input type="text" id="Comment" placeholder="Score"><br>
+  <label for="name"><strong> Player: </strong></label><input type="text" id="Name" placeholder="Player"><br>
+  <label for="comment"><strong>Score: </strong></label><input type="text" id="Comment" placeholder="Score"><br>
 </form>
 
 <button id="serialize">Post</button>
 <button id="colors">Change Color</button>
 <div id="json"></div>
 <div id="done"></div>
-<div   id="comments"></div>
+<div   id="comments" style="font-weight:bold;"></div>
 
 
 <script>
@@ -87,7 +87,7 @@ player = {
 		this.yCoord = Math.max(Math.min(this.yCoord, HEIGHT - this.height), 0);
 	},
 	draw: function(color) {
-		objectPiece.fillStyle = color;/*|| "blue*/
+		objectPiece.fillStyle = "Green";
 		
 		objectPiece.fillRect(this.xCoord, this.yCoord, this.width, this.height);
 	}
@@ -105,7 +105,7 @@ computer = {
 		this.yCoord = Math.max(Math.min(this.yCoord, HEIGHT - this.height), 0);
 	},
 	draw: function() {
-		objectPiece.fillStyle = "blue";
+		objectPiece.fillStyle = "Green";
 		objectPiece.fillRect(this.xCoord, this.yCoord, this.width, this.height);
 	}
 }
@@ -180,7 +180,7 @@ function main(){
 
 if(computerScore == 1){
 	
-	window.alert("IF YOU LOSE, ENTER YOUR SCORE AND HIT REFRESH!");
+	window.alert("YOU LOST, YOUR SCORE WAS " + playerScore + ". ENTER YOUR SCORE AND HIT REFRESH!");
 	system('pause');
 }
 	canvas = document.createElement("canvas");
@@ -242,21 +242,10 @@ function draw() {
 	
 	var colors=["blue", "orange", "green", "yellow", "white", "purple", "red"];
 		
-		
-		
 
 	ball.draw();
 	player.draw(colors[color]);
 	computer.draw();
-
-	var w = 4;
-	var xCoord = (WIDTH - w) * 0.5;
-	var yCoord = 0;
-	var step = HEIGHT/20;
-	while (yCoord < HEIGHT) {
-		objectPiece.fillRect(xCoord, yCoord+step*0.25, w, step*0.5);
-		yCoord+= step;
-	}
 
 	objectPiece.restore();
 }
