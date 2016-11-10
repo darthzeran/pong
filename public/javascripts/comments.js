@@ -4,6 +4,7 @@ $(document).ready(function(){
        // console.log(data);
 	   
         var everything = "<ul>";
+		data.reverse();
         for(var comment in data) {
           com = data[comment];
           everything += "<li>Player: " + com.Name + " -- Score: " + com.Comment + "</li>";
@@ -34,6 +35,7 @@ $.ajax({
  $.getJSON('comment', function(data) {
        // console.log(data);
         var everything = "<ul>";
+		data.reverse();
         for(var comment in data) {
           com = data[comment];
           everything += "<li>Player: " + com.Name + " -- Score: " + com.Comment + "</li>";
