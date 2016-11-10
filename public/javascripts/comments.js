@@ -18,7 +18,7 @@ $(document).ready(function(){
    if(myobj.Comment>10){
    window.alert("liar");
    }
-    jobj = JSON.stringify(myobj);
+   else{ jobj = JSON.stringify(myobj);
    // $("#json").text(jobj);	
 	var url = "comment";
 $.ajax({
@@ -29,7 +29,7 @@ $.ajax({
   success: function(data,textStatus) {
      // $("#done").html(textStatus);
   }
-})
+   })}
 
  $.getJSON('comment', function(data) {
        // console.log(data);

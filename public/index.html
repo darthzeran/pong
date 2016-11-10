@@ -19,7 +19,7 @@
 		}
 		#comments{
 		clear: right;
-			height: 500px;
+			height: 300px;
 			width: 400px;
 			overflow-x: hidden;
 			}
@@ -27,9 +27,12 @@
 		#commentForm{
 		text-align: ;
 		}
+		#pp{
+			height: 200px;
+		}
 		#colors{
 		position: absolute;
-    top: 160px;
+    top: 140px;
     right: 1045px;
 		}
 	</style>
@@ -38,7 +41,7 @@
 </head>
 <body style="background-color:lightblue">
 
-<img src="PongLogo.png">
+<img id="pp" src="PongLogo.png">
 <h1 id="PlayerScore">You: 0</h1>
 <h1 id="ComputerScore">Computer: 0</h1>
 
@@ -89,7 +92,7 @@ player = {
 		this.yCoord = Math.max(Math.min(this.yCoord, HEIGHT - this.height), 0);
 	},
 	draw: function(color) {
-		objectPiece.fillStyle = "Green";
+		objectPiece.fillStyle = color;
 		
 		objectPiece.fillRect(this.xCoord, this.yCoord, this.width, this.height);
 	}
@@ -242,7 +245,7 @@ function draw() {
 
 	objectPiece.fillStyle = "blue";
 	
-	var colors=["blue", "orange", "green", "yellow", "white", "purple", "red"];
+	var colors=["green", "orange", "blue", "yellow", "white", "purple", "red"];
 		
 
 	ball.draw();
